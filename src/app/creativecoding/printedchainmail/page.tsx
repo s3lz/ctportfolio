@@ -88,6 +88,7 @@ export default function PrintedChainmailPage() {
                   alt="Blender Geometry Nodes graph used to flatten the cut mesh"
                   width={2048}
                   height={647}
+                  sizes="(max-width: 720px) 240px, 700px"
                 />
               </Zoomable>
               <Zoomable
@@ -100,6 +101,7 @@ export default function PrintedChainmailPage() {
                   alt="Four flattened 2D mesh patches resulting from the cut and unfold"
                   width={1296}
                   height={1166}
+                  sizes="(max-width: 720px) 90px, 250px"
                 />
               </Zoomable>
             </Reveal>
@@ -125,6 +127,7 @@ export default function PrintedChainmailPage() {
                       alt="Triangulated mesh patch before remeshing, with irregular triangle sizes"
                       width={1078}
                       height={996}
+                      sizes="(max-width: 480px) 90vw, 400px"
                     />
                   </Zoomable>
                 </figure>
@@ -141,6 +144,7 @@ export default function PrintedChainmailPage() {
                       alt="The same mesh patch after remeshing into near-equilateral triangles"
                       width={1168}
                       height={1004}
+                      sizes="(max-width: 480px) 90vw, 400px"
                     />
                   </Zoomable>
                 </figure>
@@ -268,6 +272,7 @@ export default function PrintedChainmailPage() {
                       alt="Link design with an open, disconnected middle"
                       width={1354}
                       height={1244}
+                      sizes="(max-width: 720px) 160px, 250px"
                     />
                   </Zoomable>
                 </figure>
@@ -283,6 +288,7 @@ export default function PrintedChainmailPage() {
                       alt="Link design with thin struts and low bed contact area"
                       width={1102}
                       height={1000}
+                      sizes="(max-width: 720px) 160px, 250px"
                     />
                   </Zoomable>
                 </figure>
@@ -298,6 +304,7 @@ export default function PrintedChainmailPage() {
                       alt="Link design with rounded petal loops"
                       width={529}
                       height={559}
+                      sizes="(max-width: 720px) 140px, 220px"
                     />
                   </Zoomable>
                 </figure>
@@ -313,6 +320,7 @@ export default function PrintedChainmailPage() {
                       alt="Close-up render of the rounded link bottoms"
                       width={823}
                       height={400}
+                      sizes="(max-width: 720px) 300px, 460px"
                     />
                   </Zoomable>
                 </figure>
@@ -328,6 +336,7 @@ export default function PrintedChainmailPage() {
                       alt="Schematic showing the link sliced by -0.1mm to create a flat bottom"
                       width={847}
                       height={496}
+                      sizes="(max-width: 720px) 250px, 390px"
                     />
                   </Zoomable>
                 </figure>

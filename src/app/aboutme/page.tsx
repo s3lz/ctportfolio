@@ -129,7 +129,7 @@ export default function AboutMePage() {
           alt="Harold Applejuice, a tabby cat, sitting and looking up"
           width={1271}
           height={3017}
-          sizes="260px"
+          sizes="280px"
         />
       </div>
     </main>

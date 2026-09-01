@@ -25,3 +25,6 @@ pnpm-debug.log*
 # public/ (renamed/processed as needed)
 /PROJECT RESOURCES/
 /ALL PICTURES/
+
+# local Claude Code tool state
+/.claude/

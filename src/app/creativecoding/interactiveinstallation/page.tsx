@@ -24,6 +24,7 @@ export default function InteractiveInstallationPage() {
               alt="Synth-Sense logo: an orange blob"
               width={1800}
               height={1800}
+              sizes="(max-width: 720px) 190px, 300px"
             />
             <h1 className="iiBannerTitle">Interactive Art Installation</h1>
           </div>
@@ -171,6 +172,7 @@ export default function InteractiveInstallationPage() {
                   alt="The blob in a cool blue hue for cold weather"
                   width={1098}
                   height={1089}
+                  sizes="(max-width: 480px) 60vw, 230px"
                 />
               </Zoomable>
               <Zoomable
@@ -183,6 +185,7 @@ export default function InteractiveInstallationPage() {
                   alt="The blob in a warm orange hue for hot weather"
                   width={858}
                   height={897}
+                  sizes="(max-width: 480px) 55vw, 220px"
                 />
               </Zoomable>
             </Reveal>
