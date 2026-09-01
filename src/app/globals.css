@@ -1,0 +1,1878 @@
+@import url("https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@400&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.landing {
+  --design-width: 1280;
+  --design-height: 832;
+  --scale-x: calc((100vw / 1px) / var(--design-width));
+  --scale-y: calc((100dvh / 1px) / var(--design-height));
+  --cover-scale: max(var(--scale-x), var(--scale-y));
+  --scaled-height: calc(var(--design-height) * var(--cover-scale) * 1px);
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  height: var(--scaled-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #f6dbcc;
+}
+
+.overlayFrame {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1280px;
+  height: 832px;
+  transform: translateX(-50%) scale(var(--cover-scale));
+  transform-origin: top center;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.bgBase {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1280px;
+  height: 832px;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.title {
+  position: fixed;
+  left: calc(50% + (16px - 640px) * var(--cover-scale));
+  top: calc(-14px * var(--cover-scale));
+  margin: 0;
+  z-index: 5;
+  font-size: calc(128px * var(--cover-scale));
+  font-weight: 400;
+  line-height: 1;
+  text-transform: lowercase;
+  color: #ff006f;
+  letter-spacing: calc(-7.68px * var(--cover-scale));
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.layer {
+  position: absolute;
+  display: block;
+  z-index: 3;
+  pointer-events: auto;
+}
+
+.figureImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 140ms ease;
+}
+
+.figureBase {
+  opacity: 1;
+}
+
+.figureHover {
+  opacity: 0;
+}
+
+.layer:hover .figureBase,
+.layer:focus-visible .figureBase {
+  opacity: 0;
+}
+
+.layer:hover .figureHover,
+.layer:focus-visible .figureHover {
+  opacity: 1;
+}
+
+.computerGroup {
+  left: 81px;
+  top: 386px;
+  width: 295px;
+  height: 400px;
+}
+
+.drawingGroup {
+  left: 561px;
+  top: 269px;
+  width: 420px;
+  height: 506px;
+}
+
+.standingGroup {
+  left: 1041px;
+  top: 162px;
+  width: 238px;
+  height: 611px;
+}
+
+.sketchbook {
+  --design-width: 1280;
+  --design-height: 832;
+  --scale-x: calc((100vw / 1px) / var(--design-width));
+  --scale-y: calc((100dvh / 1px) / var(--design-height));
+  --fit-scale: min(var(--scale-x), var(--scale-y));
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #ff4ab1;
+}
+
+.sketchbookEmpty {
+  margin: 2rem;
+  color: white;
+}
+
+.sketchbookFrame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1280px;
+  height: 832px;
+  transform: translate(-50%, -50%) scale(var(--fit-scale));
+  transform-origin: center;
+  z-index: 2;
+}
+
+.sketchbookBgWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.sketchbookBg {
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.sketchbookTint {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 74, 177, 0.52);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sketchbookNav {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: calc(20px * var(--fit-scale)) calc(16px * var(--fit-scale))
+    calc(16px * var(--fit-scale));
+}
+
+.sketchbookHome {
+  font-size: calc(48px * var(--fit-scale));
+  font-weight: 400;
+  line-height: calc(65px * var(--fit-scale));
+  letter-spacing: calc(-1.44px * var(--fit-scale));
+  color: #fff;
+  text-decoration: none;
+  text-transform: lowercase;
+}
+
+.sketchbookHome:hover,
+.sketchbookHome:focus-visible,
+.sketchbookHome:active,
+.sketchbookMenuLink:hover,
+.sketchbookMenuLink:focus-visible,
+.sketchbookMenuLink:active {
+  font-weight: 600;
+}
+
+.sketchbookMenu {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: calc(-8px * var(--fit-scale));
+  padding-left: calc(4px * var(--fit-scale));
+}
+
+.sketchbookNav:hover .sketchbookMenu,
+.sketchbookNav:focus-within .sketchbookMenu {
+  display: flex;
+}
+
+.sketchbookMenuLink {
+  font-size: calc(24px * var(--fit-scale));
+  font-weight: 400;
+  line-height: calc(32px * var(--fit-scale));
+  letter-spacing: calc(-0.72px * var(--fit-scale));
+  color: #fff;
+  text-decoration: none;
+  text-transform: lowercase;
+}
+
+.sketchbookArrow {
+  position: absolute;
+  top: 50%;
+  z-index: 6;
+  width: calc(110px * var(--fit-scale));
+  height: calc(110px * var(--fit-scale));
+  border: none;
+  border-radius: 50%;
+  background: rgba(186, 186, 186, 0.42);
+  cursor: pointer;
+  transform: translateY(-50%);
+  padding: 0;
+}
+
+.sketchbookArrow:hover,
+.sketchbookArrow:focus-visible {
+  background: rgba(186, 186, 186, 0.58);
+}
+
+.sketchbookArrowLeft {
+  left: 25px;
+}
+
+.sketchbookArrowRight {
+  right: 25px;
+}
+
+.sketchbookArrowIcon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #8b4e74;
+  stroke-width: 9;
+}
+
+.sketchbookArrowLeft .sketchbookArrowIcon {
+  transform: rotate(180deg);
+}
+
+.tagStage {
+  position: absolute;
+  left: 50%;
+  top: 53px;
+  width: 433px;
+  height: 593px;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.hangTag {
+  position: relative;
+  width: 433px;
+  background: #fff;
+  border: none;
+  border-radius: 48px;
+  padding: 0;
+  appearance: none;
+  font: inherit;
+  color: inherit;
+  filter: drop-shadow(5px 8px 12px rgba(0, 0, 0, 0.16));
+  -webkit-mask-image: radial-gradient(
+    circle 11px at 50% 32px,
+    transparent 10.5px,
+    #000 11.5px
+  );
+  mask-image: radial-gradient(
+    circle 11px at 50% 32px,
+    transparent 10.5px,
+    #000 11.5px
+  );
+}
+
+.hangTagHole {
+  position: absolute;
+  left: 50%;
+  top: 21px;
+  width: 22px;
+  height: 22px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+}
+
+.pictureTag {
+  height: 593px;
+  font-family: var(--font-ibm-plex-thai), sans-serif;
+  color: #000;
+  z-index: 1;
+}
+
+.hangTagRule {
+  position: absolute;
+  left: 23px;
+  right: 29px;
+  height: 1px;
+  background: #2a2a2a;
+}
+
+.hangTagRuleTop {
+  top: 70px;
+}
+
+.hangTagRuleMid {
+  top: 412px;
+}
+
+.pictureTagArt {
+  position: absolute;
+  left: 23px;
+  right: 29px;
+  top: 82px;
+  height: 318px;
+  overflow: hidden;
+  display: block;
+  padding: 0;
+  border: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pictureTagArt:focus-visible {
+  outline: 2px solid #4b002b;
+  outline-offset: 2px;
+}
+
+.pictureTagImage {
+  object-fit: contain;
+}
+
+.pictureTagNo {
+  position: absolute;
+  left: 22px;
+  top: 427px;
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.pictureTagCompTitle {
+  position: absolute;
+  right: 27px;
+  top: 421px;
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.pictureTagCompRow {
+  position: absolute;
+  left: 221px;
+  right: 29px;
+  top: 445px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.pictureTagBarcode {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 471px;
+  height: 85px;
+  margin: 0;
+  font-family: var(--font-barcode), monospace;
+  font-size: 128px;
+  line-height: 0.7;
+  letter-spacing: -7.68px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.pictureTagFooter {
+  position: absolute;
+  left: 23px;
+  right: 28px;
+  bottom: 16px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pictureTagName,
+.pictureTagSeason {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.pictureTagName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.frontTag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 433px;
+  height: 588px;
+  z-index: 2;
+  cursor: pointer;
+  background: transparent;
+  filter: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+  transform-origin: 92.937% 5.381%;
+  transform: rotate(0deg);
+  transition: transform 1200ms ease-in-out;
+}
+
+.frontTag.is-open {
+  transform: rotate(180deg);
+}
+
+.frontTagFace {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  border-radius: 48px;
+  filter: drop-shadow(5px 8px 12px rgba(0, 0, 0, 0.16));
+  -webkit-mask-image: radial-gradient(
+    circle 11px at 50% 32px,
+    transparent 10.5px,
+    #000 11.5px
+  );
+  mask-image: radial-gradient(
+    circle 11px at 50% 32px,
+    transparent 10.5px,
+    #000 11.5px
+  );
+}
+
+.frontTagName {
+  position: absolute;
+  left: 29px;
+  right: 29px;
+  top: 232px;
+  margin: 0;
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -3.84px;
+  text-align: center;
+  color: #ff006f;
+  text-transform: lowercase;
+}
+
+.frontTagLabel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 309px;
+  margin: 0;
+  font-family: "Bitcount Prop Double", monospace;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  color: #606060;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frontTag {
+    transition: none;
+  }
+}
+
+.galleryViewport {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(186px * var(--fit-scale));
+  z-index: 5;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.galleryInner {
+  width: calc(100vw / var(--fit-scale));
+  height: 186px;
+  transform: scale(var(--fit-scale));
+  transform-origin: top left;
+}
+
+.galleryViewport:active {
+  cursor: grabbing;
+}
+
+.galleryTrack {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  padding: 0 20px;
+  width: max-content;
+  will-change: transform;
+}
+
+.galleryTrack.is-snapping {
+  transition: transform 280ms ease-out;
+}
+
+.galleryThumb {
+  position: relative;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  background: #2e2727;
+  cursor: pointer;
+  transition: width 160ms ease, height 160ms ease;
+}
+
+.galleryThumb.is-selected {
+  border: 3px solid #4b002b;
+}
+
+.galleryThumb.is-hovered {
+  border: 2px solid #4b002b;
+}
+
+.galleryThumbImage {
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.sketchZoom {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: block;
+  padding: 0;
+  border: none;
+  appearance: none;
+  background: rgba(29, 29, 29, 0.9);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.sketchZoomArt {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(947px * var(--fit-scale));
+  height: calc(691px * var(--fit-scale));
+  transform: translate(-50%, -50%);
+}
+
+.sketchZoomImage {
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.sketchZoomHover {
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.sketchPreload {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sketchZoomArt.has-hover:hover .sketchZoomHover {
+  opacity: 1;
+}
+
+.galleryThumbDim {
+  position: absolute;
+  /* Overhang past the edges so scaling never leaves a bright fringe; the thumb's
+     overflow clip supplies the rounded corners. */
+  inset: -2px;
+  pointer-events: none;
+  transition: background 160ms ease;
+}
+
+.creativeCoding {
+  --design-width: 1280;
+  --design-height: 832;
+  --scale-x: calc((100vw / 1px) / var(--design-width));
+  --scale-y: calc((100dvh / 1px) / var(--design-height));
+  --fit-scale: min(var(--scale-x), var(--scale-y));
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #f4f5f8;
+  color: #000;
+}
+
+.creativeCodingFrame {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* Design units are 1280 wide, but the frame stretches to whatever the screen
+     gives us so a wide display fills edge to edge instead of letterboxing. */
+  width: calc(100vw / var(--fit-scale));
+  height: 832px;
+  overflow: hidden;
+  transform: translate(-50%, -50%) scale(var(--fit-scale));
+  transform-origin: center;
+  background: #f4f5f8;
+}
+
+.creativeCoding.is-project,
+.creativeCoding.is-project .creativeCodingFrame {
+  background: #fff;
+}
+
+.creativeCodingNav {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 105px;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 65px;
+  letter-spacing: -1.44px;
+}
+
+.creativeCodingNavGroup {
+  display: flex;
+  gap: 75px;
+}
+
+.creativeCodingNav a {
+  padding: 20px 16px 0;
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.creativeCodingNav a:hover,
+.creativeCodingNav a:focus-visible,
+.creativeCodingNav a:active {
+  font-weight: 600;
+}
+
+.creativeCodingHeader {
+  position: absolute;
+  left: 16px;
+  top: 187px;
+  z-index: 4;
+}
+
+.creativeCodingHeader h1,
+.creativeCodingHeader p,
+.creativeCodingInfo h2,
+.creativeCodingInfo p {
+  margin: 0;
+  font-weight: 400;
+}
+
+.creativeCodingHeader h1 {
+  font-size: 96px;
+  line-height: 65px;
+  letter-spacing: -2.88px;
+  white-space: nowrap;
+}
+
+.creativeCodingHeader p {
+  margin-top: 18px;
+  /* The 96px heading's round "c" sits further into its box than the 32px "p",
+     so nudge the subtitle right to line the two stems up optically. */
+  text-indent: 2px;
+  font-size: 32px;
+  line-height: 42px;
+  letter-spacing: -0.96px;
+  white-space: nowrap;
+}
+
+.creativeCodingInfo {
+  /* Lives inside the track so a drag carries the copy along with its disc. */
+  position: absolute;
+  z-index: 4;
+  width: 282px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: inherit;
+  text-decoration: none;
+}
+
+.creativeCodingInfo.is-link {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.creativeCodingHeader p a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.creativeCodingHeader p a:hover,
+.creativeCodingHeader p a:focus-visible,
+.creativeCodingHeader p a:active {
+  font-weight: 600;
+}
+
+.creativeCodingInfo h2 {
+  margin-bottom: 12px;
+  font-size: 31px;
+  line-height: 38px;
+  letter-spacing: -0.93px;
+  white-space: nowrap;
+}
+
+.creativeCodingDescription {
+  font-size: 24px;
+  line-height: 26px;
+  letter-spacing: -0.72px;
+}
+
+.creativeCodingDate {
+  margin-top: 24px !important;
+  font-size: 24px;
+  line-height: 31px;
+  letter-spacing: -0.72px;
+}
+
+.creativeCodingGo {
+  margin-top: 12px;
+  font-size: 24px;
+  line-height: 31px;
+  letter-spacing: -0.72px;
+}
+
+.creativeCodingInfo.is-link:hover .creativeCodingGo,
+.creativeCodingInfo.is-link:focus-visible .creativeCodingGo {
+  font-weight: 600;
+}
+
+.creativeCodingViewport {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 416px;
+  z-index: 2;
+  height: 391px;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.creativeCodingViewport.is-dragging {
+  cursor: grabbing;
+}
+
+.creativeCodingTrack {
+  position: relative;
+  width: 100%;
+  height: 391px;
+  will-change: transform;
+}
+
+.creativeCodingTrack.is-settling {
+  transition: transform 420ms ease-out;
+}
+
+.creativeCodingDisc {
+  position: absolute;
+  top: 0;
+  width: 390.388px;
+  height: 390.388px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  transition: left 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.creativeCodingDisc.is-interactive {
+  cursor: pointer;
+}
+
+.creativeCodingDisc.is-interactive:focus-visible {
+  z-index: 3;
+  outline: 4px solid #000;
+  outline-offset: -6px;
+  border-radius: 50%;
+}
+
+.creativeCodingDiscOuter {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 390.388px;
+  height: 390.388px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.creativeCodingDisc.is-active .creativeCodingDiscOuter {
+  animation: creativeCodingSpin 18s linear infinite;
+}
+
+@keyframes creativeCodingSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .creativeCodingTrack.is-settling,
+  .creativeCodingDisc {
+    transition: none;
+  }
+
+  .creativeCodingDisc.is-active .creativeCodingDiscOuter {
+    animation: none;
+  }
+}
+
+/*
+ * Kinetic Typography project page.
+ * Unlike the rest of the site, this is a normal scrolling document rather
+ * than a fixed 1280x832 canvas — the case-study content doesn't fit a
+ * single screen, so this page intentionally breaks from that pattern.
+ */
+.ktPage {
+  --kt-lavender: #eaedf5;
+  --kt-rose: #ede2e1;
+  --kt-cream: #fdf6ef;
+  --kt-mauve: #9c4a49;
+  --kt-pink: #c63075;
+  position: relative;
+  background: #fff;
+  color: #1a1a1a;
+  min-height: 100dvh;
+}
+
+.ktNav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 105px;
+  padding: 0 16px;
+  background: #fff;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 65px;
+  letter-spacing: -1.44px;
+}
+
+.ktNav a {
+  padding: 20px 16px 0;
+  color: inherit;
+  text-decoration: none;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.ktNav a:hover,
+.ktNav a:focus-visible {
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .ktNav {
+    height: auto;
+    padding: 0 4px;
+    font-size: 22px;
+    line-height: 1.3;
+    letter-spacing: -0.66px;
+  }
+
+  .ktNav a {
+    padding: 16px 8px 0;
+  }
+}
+
+.ktBanner {
+  width: 100%;
+  background: var(--kt-lavender);
+}
+
+.ktBanner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ktContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.ktSection {
+  padding-top: 64px;
+}
+
+.ktSection:last-of-type {
+  padding-bottom: 64px;
+}
+
+.ktHeading {
+  margin: 0 0 24px;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+}
+
+.ktSubheading {
+  margin: 32px 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.ktBody {
+  margin: 0 0 16px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #333;
+}
+
+.ktOverviewGrid {
+  display: flex;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.ktOverviewText {
+  flex: 1 1 480px;
+}
+
+.ktOverviewMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 140px;
+}
+
+.ktMetaLabel {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: #888;
+}
+
+.ktMetaValue {
+  margin: 0;
+  font-size: 18px;
+}
+
+.ktVideoFrame {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #f4d7de;
+}
+
+.ktVideoFrame video {
+  display: block;
+  width: 100%;
+}
+
+.ktSongLabel {
+  margin: 0 0 16px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.ktSongPlayer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: var(--kt-cream);
+  padding: 16px 20px;
+}
+
+.ktSongPlayerButton {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: #d1dbf1;
+  color: #707070;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.ktSongPlayerButton:hover,
+.ktSongPlayerButton:focus-visible {
+  opacity: 0.85;
+}
+
+.ktSongPlayerBody {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ktSongPlayerTitle {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.ktSongPlayerRange {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 16px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ktSongPlayerRange::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: #d1dbf1;
+}
+
+.ktSongPlayerRange::-moz-range-track {
+  height: 4px;
+  border-radius: 2px;
+  background: #d1dbf1;
+}
+
+.ktSongPlayerRange::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -5px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #707070;
+  cursor: pointer;
+}
+
+.ktSongPlayerRange::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: #707070;
+  cursor: pointer;
+}
+
+.ktSongPlayerTime {
+  flex: 0 0 auto;
+  font-size: 12px;
+  color: #888;
+  font-variant-numeric: tabular-nums;
+}
+
+.ktTwoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.ktColHeading {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ktFlowPanel {
+  margin: 32px 0;
+  border-radius: 12px;
+  background: var(--kt-rose);
+  padding: 40px;
+}
+
+.ktFlowImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ktCodeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.ktCodeBlock {
+  overflow-x: auto;
+  border-radius: 8px;
+  background: var(--kt-rose);
+  padding: 20px;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #333;
+}
+
+.ktPromptGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.ktPromptBlock {
+  border-radius: 8px;
+  background: var(--kt-rose);
+  padding: 20px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  color: #333;
+}
+
+.ktPalette {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.ktSwatch {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #333;
+  border-radius: 50%;
+}
+
+.ktDesignImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 24px;
+  border-radius: 4px;
+}
+
+.ktComponentsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.ktComponentsGrid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.ktFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  overflow: hidden;
+  padding: 22px 24px;
+  background: #f0c6d3;
+  color: #7a2b3f;
+  font-size: 14px;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.ktFooterNotes {
+  flex: 1 1 0;
+  overflow: hidden;
+  opacity: 0.55;
+}
+
+.ktFooter a {
+  flex: 0 0 auto;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ktFooter a:hover,
+.ktFooter a:focus-visible {
+  opacity: 0.8;
+}
+
+@media (max-width: 720px) {
+  .ktTwoCol,
+  .ktCodeGrid,
+  .ktPromptGrid,
+  .ktComponentsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .ktOverviewGrid {
+    flex-direction: column;
+  }
+
+  .ktFooter {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+}
+
+/*
+ * 3D Printed Chainmail project page.
+ * Reuses the generic case-study scaffolding (.ktPage, .ktNav, .ktContainer,
+ * .ktSection, .ktHeading, .ktSubheading, .ktBody, .ktOverviewGrid,
+ * .ktOverviewMeta, .ktColHeading, etc.) introduced for the kinetic
+ * typography page; classes below (cm*) are specific to this page's
+ * highlight panels, image grids, and 3D viewer.
+ */
+.cmBodyLarge {
+  font-size: 19px;
+}
+
+.cmTitle {
+  margin: 48px 0 0;
+  text-align: center;
+  font-family: "Bitcount Prop Single", monospace;
+  font-size: 72px;
+  font-weight: 500;
+  color: #40a961;
+  letter-spacing: -0.5px;
+}
+
+.cmHighlight {
+  margin: 32px 0;
+  border-radius: 12px;
+  background: #e2f0dc;
+  padding: 32px;
+}
+
+.cmTwoUp {
+  display: grid;
+  /* minmax(0, 1fr), not plain 1fr: an intrinsically-sized child (e.g. the
+     STL viewer's canvas) can otherwise force its track wider than its
+     sibling, breaking the equal 50/50 split. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 24px 0;
+}
+
+.cmTwoUp > * {
+  min-width: 0;
+}
+
+.cmStepImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 24px 0;
+  border-radius: 6px;
+}
+
+/*
+ * Same-height, auto-width image row. Forcing very different aspect ratios
+ * (a wide short photo next to a near-square one) into identical boxes
+ * either stretches them or letterboxes with a lot of dead space; matching
+ * height instead (like a contact sheet) keeps every image's own proportions
+ * while still lining rows up cleanly. Flex-wrap + justify-content: center
+ * also means an incomplete last row (e.g. 5 items, 3+2) centers itself
+ * instead of leaving a dead gap.
+ */
+.cmImageRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 24px;
+  margin: 24px 0;
+}
+
+/* Force this pair to always sit side by side rather than wrapping; the
+   images shrink together (preserving aspect ratio via max-width) on
+   narrow viewports instead of stacking. */
+.cmImageRow--nowrap {
+  flex-wrap: nowrap;
+}
+
+.cmImageRow--nowrap img {
+  min-width: 0;
+  flex-shrink: 1;
+  /* Let width shrink to fit while height is driven by max-height, not a
+     fixed height — a fixed height ignores flex-shrink on width and
+     distorts the image instead of scaling both dimensions together. */
+  height: auto;
+  max-height: 210px;
+  width: auto;
+}
+
+.cmImageRow figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+
+.cmRowImage {
+  display: block;
+  width: auto;
+  height: 220px;
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+@media (max-width: 720px) {
+  .cmRowImage {
+    height: 140px;
+  }
+}
+
+/*
+ * Fixed square box used by the remaining cmTwoUp image pairs (Step 3's
+ * script/petal and propagation/triple-petal rows). object-fit: contain
+ * keeps mismatched aspect ratios from stretching.
+ */
+.cmImgBox {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.cmImgBox img {
+  object-fit: contain;
+}
+
+.cmStlViewer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #ececec;
+}
+
+.cmStlViewerCanvas {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.cmStlViewerCanvas:active {
+  cursor: grabbing;
+}
+
+.cmStlViewerPoster {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  object-fit: contain;
+}
+
+.cmStlViewerStatus {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+  background: rgba(236, 236, 236, 0.7);
+}
+
+.cmStlViewerHint {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  left: 0;
+  margin: 0;
+  font-size: 12px;
+  font-style: italic;
+  color: #999;
+  text-align: center;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .cmTwoUp {
+    grid-template-columns: 1fr;
+  }
+
+  .cmTitle {
+    font-size: 28px;
+  }
+}
+
+/* Scroll-triggered reveal for image blocks: fades and rises into place
+   once, the first time it enters the viewport. */
+.cmReveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.cmReveal.is-in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Gentle hover lift on the static images/photos themselves. */
+.cmImgBox,
+.cmRowImage {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cmImgBox:hover,
+.cmRowImage:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+/* Wraps an image to make it clickable, without disturbing the layout it
+   sits in: display: contents means the <button> generates no box of its
+   own, so the wrapped image participates directly in the parent flex/grid
+   as if the button weren't there. */
+.cmZoomable {
+  display: contents;
+  cursor: zoom-in;
+}
+
+.cmLightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.85);
+  cursor: zoom-out;
+  animation: cmLightboxFadeIn 0.2s ease;
+}
+
+.cmLightboxImage {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.cmLightboxClose {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.cmLightboxClose:hover,
+.cmLightboxClose:focus-visible {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes cmLightboxFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmReveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .cmImgBox,
+  .cmRowImage {
+    transition: none;
+  }
+
+  .cmImgBox:hover,
+  .cmRowImage:hover {
+    transform: none;
+  }
+
+  .cmLightbox {
+    animation: none;
+  }
+}
+
+/*
+ * Interactive Art Installation project page. Reuses the same generic
+ * case-study scaffolding as the other project pages (.ktPage, .ktNav,
+ * .ktContainer, .ktSection, .ktHeading, .ktSubheading, .ktBody,
+ * .ktOverviewGrid, .ktOverviewMeta) plus the shared reveal/zoom/lightbox
+ * classes (.cmReveal, .cmZoomable, .cmLightbox*); classes below (ii*) are
+ * specific to this page's banner, blob imagery, and video treatments.
+ */
+.iiBannerRow {
+  display: flex;
+  align-items: center;
+  margin: 16px 0 0;
+}
+
+.iiBannerBlob {
+  flex: 0 0 auto;
+  width: 300px;
+  height: 220px;
+  object-fit: cover;
+}
+
+.iiBannerTitle {
+  margin: 0 0 0 -60px;
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+
+.iiDemoImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 32px 0 0;
+  border-radius: 8px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.iiDemoImage--small {
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.iiDemoImage:hover {
+  transform: scale(1.01);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+
+.iiList {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #333;
+}
+
+.iiList li {
+  margin-bottom: 6px;
+}
+
+.iiRepoRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.iiRepoBlob {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.iiRepoRow span {
+  font-size: 18px;
+}
+
+.iiRepoRow:hover span,
+.iiRepoRow:focus-visible span {
+  font-weight: 600;
+}
+
+.iiBlobRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 32px;
+  margin: 24px 0;
+}
+
+.iiBlobImage {
+  display: block;
+  width: auto;
+  height: 220px;
+  max-width: 100%;
+  transition: transform 0.25s ease;
+}
+
+.iiBlobImage:hover {
+  transform: scale(1.05);
+}
+
+.iiVideoInput {
+  overflow: hidden;
+  border-radius: 8px;
+  background: #fbe4cf;
+  padding: 32px;
+  margin: 24px 0;
+}
+
+.iiVideoInput video {
+  display: block;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.iiFooter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 24px;
+  margin-top: 64px;
+  background: #ffb877;
+  color: #6b3a10;
+}
+
+.iiFooter a {
+  color: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.iiFooter a:hover,
+.iiFooter a:focus-visible {
+  opacity: 0.75;
+}
+
+@media (max-width: 720px) {
+  .iiBannerBlob {
+    width: 190px;
+    height: 140px;
+  }
+
+  .iiBannerTitle {
+    margin-left: -30px;
+    font-size: 28px;
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iiDemoImage,
+  .iiBlobImage {
+    transition: none;
+  }
+
+  .iiDemoImage:hover,
+  .iiBlobImage:hover {
+    transform: none;
+  }
+}
+
+/*
+ * About Me page. Reuses .ktPage / .ktNav / .ktContainer from the project
+ * pages, but unlike those this is a normal scrolling document with a
+ * colored hero section that grows to fit its content (not a fixed-height
+ * canvas), followed by a plain white "Connect With Me" section.
+ */
+.amHero {
+  background: #fffcf3;
+  padding: 40px 0 64px;
+}
+
+.amHeroGrid {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.amPhotos {
+  display: flex;
+  flex: 0 0 380px;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.amPhotos img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+
+.amText {
+  flex: 1 1 auto;
+}
+
+.amText p {
+  margin: 0 0 20px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #1a1a1a;
+}
+
+.amText p:last-child {
+  margin-bottom: 0;
+}
+
+.amConnect {
+  position: relative;
+  background: #fff;
+  padding: 56px 0 80px;
+}
+
+.amConnectHeading {
+  margin: 0 0 64px;
+  font-size: 44px;
+  font-weight: 400;
+}
+
+.amButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 360px;
+  margin-bottom: 32px;
+}
+
+.amButton {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 32px 10px 10px;
+  border-radius: 999px;
+  background: #eb88a5;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.amButton:hover,
+.amButton:focus-visible {
+  opacity: 0.85;
+}
+
+.amButtonIcon {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fff;
+  color: #eb88a5;
+}
+
+.amButtonIcon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.amResumeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #eb88a5;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.amResumeLink:hover,
+.amResumeLink:focus-visible {
+  text-decoration: underline;
+}
+
+.amCat {
+  /* Anchored to the section's bottom (not top) so it's always flush with
+     the bottom of the page, matching the reference — its height then
+     determines how far it pokes up into the cream section above. */
+  position: absolute;
+  right: 32px;
+  bottom: 0;
+  width: 280px;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .amHeroGrid {
+    flex-direction: column;
+  }
+
+  .amPhotos {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .amConnect {
+    padding-bottom: 340px;
+  }
+
+  .amCat {
+    top: auto;
+    right: 50%;
+    bottom: 24px;
+    width: 220px;
+    transform: translateX(50%);
+  }
+}
