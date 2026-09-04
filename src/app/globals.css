@@ -120,12 +120,217 @@ body {
   height: 611px;
 }
 
+/*
+ * Mobile landing layout: instead of shrinking the whole 1280x832 scene to
+ * fit a narrow screen (illegible), split it into 3 stacked "peephole" crops
+ * — one per figure — each scaled up so the figure reads clearly, using the
+ * exact same background image and figure art as desktop, just re-scaled
+ * and cropped per splice instead of relying on next/image alone.
+ */
+.landingMobile {
+  display: none;
+}
+
+.titleMobile {
+  margin: 0;
+  padding: 20px 16px;
+  background: #fff;
+  color: #ff006f;
+  font-size: 15vw;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  text-align: center;
+  text-transform: lowercase;
+}
+
+/*
+ * All three splices are the same height so the page reads as an even
+ * filmstrip and fits a phone screen in one view. Height is the fixed
+ * quantity here and zoom is derived from it: each splice picks the crop
+ * width whose resulting scale leaves its own figure filling ~82% of the
+ * strip. The figures differ a lot in design-space height (357 / 492 / 575
+ * for seated, drawing and standing), so equal heights at a shared zoom
+ * would either clip the standing figure or strand the seated one in dead
+ * space — per-splice crop widths keep all three framed the same instead.
+ */
+.mobileSplice {
+  --slice-scale: calc((100vw / 1px) / 1000);
+  position: relative;
+  width: 100%;
+  height: 60vw;
+  overflow: hidden;
+  background: #f6dbcc;
+}
+
+.mobileSplice--1 {
+  --slice-scale: calc((100vw / 1px) / 726);
+}
+
+.mobileSplice--2 {
+  --slice-scale: calc((100vw / 1px) / 1000);
+}
+
+.mobileSplice--3 {
+  --slice-scale: calc((100vw / 1px) / 1169);
+}
+
+.mobileSpliceScene {
+  position: absolute;
+  width: calc(1280px * var(--slice-scale));
+  height: calc(832px * var(--slice-scale));
+}
+
+/* Crop origins in design space, each offset so its figure sits ~82% tall
+   and vertically centred in the strip, with room for the label beside it. */
+.mobileSpliceScene--1 {
+  left: calc(-50px * var(--slice-scale));
+  top: calc(-377px * var(--slice-scale));
+}
+
+.mobileSpliceScene--2 {
+  left: calc(-240px * var(--slice-scale));
+  top: calc(-228px * var(--slice-scale));
+}
+
+.mobileSpliceScene--3 {
+  left: calc(-111px * var(--slice-scale));
+  top: calc(-121px * var(--slice-scale));
+}
+
+.mobileSceneBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mobileFigure {
+  position: absolute;
+  display: block;
+}
+
+.mobileFigureImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.mobileComputerGroup {
+  left: calc(81px * var(--slice-scale));
+  top: calc(386px * var(--slice-scale));
+  width: calc(295px * var(--slice-scale));
+  height: calc(400px * var(--slice-scale));
+}
+
+.mobileDrawingGroup {
+  left: calc(561px * var(--slice-scale));
+  top: calc(269px * var(--slice-scale));
+  width: calc(420px * var(--slice-scale));
+  height: calc(506px * var(--slice-scale));
+}
+
+.mobileStandingGroup {
+  left: calc(1041px * var(--slice-scale));
+  top: calc(162px * var(--slice-scale));
+  width: calc(238px * var(--slice-scale));
+  height: calc(611px * var(--slice-scale));
+}
+
+.mobileSpliceLabel {
+  position: absolute;
+  z-index: 4;
+  margin: 0;
+  color: #ff006f;
+  /* vw-based, not a fixed px value — a fixed size never scales with the
+     splice's own zoom level (which is all viewport-relative), so it read
+     as tiny and disconnected from the figure on an actual phone. */
+  font-size: 5vw;
+  font-weight: 700;
+  line-height: 1;
+  /* A hard-edged sticker outline (not a soft glow) to match the figure
+     cutouts' own white border, so the label reads as part of the same
+     sticker composition instead of floating text.
+     Built from offset copies rather than -webkit-text-stroke because that
+     joins corners with a miter, which spikes into points at letter
+     junctions; sweeping the glyph around a circle instead dilates it by a
+     disc, giving the rounded corners the cutouts have. */
+  --halo: 0.62vw;
+  text-shadow:
+    var(--halo) 0 0 #fff,
+    calc(var(--halo) * 0.866) calc(var(--halo) * 0.5) 0 #fff,
+    calc(var(--halo) * 0.5) calc(var(--halo) * 0.866) 0 #fff,
+    0 var(--halo) 0 #fff,
+    calc(var(--halo) * -0.5) calc(var(--halo) * 0.866) 0 #fff,
+    calc(var(--halo) * -0.866) calc(var(--halo) * 0.5) 0 #fff,
+    calc(var(--halo) * -1) 0 0 #fff,
+    calc(var(--halo) * -0.866) calc(var(--halo) * -0.5) 0 #fff,
+    calc(var(--halo) * -0.5) calc(var(--halo) * -0.866) 0 #fff,
+    0 calc(var(--halo) * -1) 0 #fff,
+    calc(var(--halo) * 0.5) calc(var(--halo) * -0.866) 0 #fff,
+    calc(var(--halo) * 0.866) calc(var(--halo) * -0.5) 0 #fff;
+  white-space: nowrap;
+  text-decoration: none;
+  /* The glyphs alone are only ~20px tall, well under a comfortable touch
+     target, so pad the hit area out and pull it back in by the same amount:
+     the box grows outward while the text stays on the silhouette edge it was
+     positioned against. */
+  padding: 3vw 2.5vw;
+  margin: -3vw -2.5vw;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Each label is placed so it just meets its own figure's silhouette edge and
+   the two white outlines merge into one sticker. Percentages are per splice
+   because each one crops the scene at a different origin and zoom: these
+   resolve to the laptop's right edge (design x 310), her back (x 600) and
+   her jeans (x 1120) respectively. */
+.mobileSpliceLabel--1 {
+  top: 32%;
+  left: 35.3%;
+}
+
+/* Labels sitting to the left of their figure are anchored by their right edge
+   so they stay pinned to the silhouette if the text or font size changes. */
+.mobileSpliceLabel--2 {
+  top: 24.5%;
+  right: 63.7%;
+}
+
+.mobileSpliceLabel--3 {
+  top: 75.5%;
+  right: 13.5%;
+}
+
+@media (max-width: 700px) {
+  .landing {
+    height: auto;
+    min-height: 0;
+    overflow-x: visible;
+    overflow-y: visible;
+  }
+
+  .overlayFrame,
+  .title {
+    display: none;
+  }
+
+  .landingMobile {
+    display: block;
+  }
+}
+
 .sketchbook {
   --design-width: 1280;
   --design-height: 832;
   --scale-x: calc((100vw / 1px) / var(--design-width));
   --scale-y: calc((100dvh / 1px) / var(--design-height));
   --fit-scale: min(var(--scale-x), var(--scale-y));
+  /* Split out of --fit-scale so a phone can size the tag and the gallery off
+     the viewport rather than off the 1280px design width. */
+  --tag-scale: var(--fit-scale);
+  --gallery-scale: var(--fit-scale);
   position: relative;
   width: 100%;
   height: 100dvh;
@@ -144,7 +349,7 @@ body {
   top: 50%;
   width: 1280px;
   height: 832px;
-  transform: translate(-50%, -50%) scale(var(--fit-scale));
+  transform: translate(-50%, -50%) scale(var(--tag-scale));
   transform-origin: center;
   z-index: 2;
 }
@@ -210,9 +415,16 @@ body {
   padding-left: calc(4px * var(--fit-scale));
 }
 
-.sketchbookNav:hover .sketchbookMenu,
 .sketchbookNav:focus-within .sketchbookMenu {
   display: flex;
+}
+
+/* Same reasoning as the enlarged view: below the phone breakpoint the links
+   are opened by tapping home, so hover doesn't also open them. */
+@media (hover: hover) and (min-width: 701px) {
+  .sketchbookNav:hover .sketchbookMenu {
+    display: flex;
+  }
 }
 
 .sketchbookMenuLink {
@@ -508,7 +720,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  height: calc(186px * var(--fit-scale));
+  height: calc(186px * var(--gallery-scale));
   z-index: 5;
   overflow: hidden;
   touch-action: none;
@@ -517,9 +729,9 @@ body {
 }
 
 .galleryInner {
-  width: calc(100vw / var(--fit-scale));
+  width: calc(100vw / var(--gallery-scale));
   height: 186px;
-  transform: scale(var(--fit-scale));
+  transform: scale(var(--gallery-scale));
   transform-origin: top left;
 }
 
@@ -579,14 +791,19 @@ body {
   background: rgba(29, 29, 29, 0.9);
   cursor: pointer;
   overflow: hidden;
+  /* The horizontal drag that swaps versions is ours, not the browser's. */
+  touch-action: none;
 }
 
 .sketchZoomArt {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: calc(947px * var(--fit-scale));
-  height: calc(691px * var(--fit-scale));
+  /* Near the full viewport rather than a landscape window: the art is
+     contained inside this box, so a portrait piece would otherwise stop at
+     the box's height and leave most of its width empty. */
+  width: calc(1180px * var(--fit-scale));
+  height: calc(772px * var(--fit-scale));
   transform: translate(-50%, -50%);
 }
 
@@ -611,8 +828,50 @@ body {
   pointer-events: none;
 }
 
-.sketchZoomArt.has-hover:hover .sketchZoomHover {
+.sketchZoomArt.is-variant .sketchZoomHover {
   opacity: 1;
+}
+
+/* Hover reveals the second version on the wide layout only. Below the phone
+   breakpoint the swipe owns that swap, so hover is off there even on a mouse:
+   a touch screen reports a tap as a hover, and a narrow desktop window that
+   shows the swipe dots shouldn't answer to both. */
+@media (hover: hover) and (min-width: 701px) {
+  .sketchZoomArt.has-hover:hover .sketchZoomHover {
+    opacity: 1;
+  }
+}
+
+/* Swipe affordance for the two versions, which is only ever needed where
+   there is no pointer to hover with. */
+.sketchZoomSwipe {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 4vw;
+  transform: translateX(-50%);
+  align-items: center;
+  gap: 2.2vw;
+  color: rgba(255, 255, 255, 0.72);
+  pointer-events: none;
+}
+
+.sketchZoomDot {
+  width: 2.1vw;
+  height: 2.1vw;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.32);
+  transition: background 160ms ease;
+}
+
+.sketchZoomDot.is-on {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 700px) {
+  .sketchZoomSwipe {
+    display: flex;
+  }
 }
 
 .galleryThumbDim {
@@ -622,6 +881,97 @@ body {
   inset: -2px;
   pointer-events: none;
   transition: background 160ms ease;
+}
+
+/*
+ * Sketchbook on mobile: the page is one 1280x832 design scaled to fit, which
+ * at phone width lands at ~0.31 and leaves the tag the size of a stamp. Below
+ * 700px the tag and the gallery are sized off the viewport instead, the
+ * prev/next arrows go away in favour of dragging the gallery, and the nav
+ * menu is always shown because a touch screen has no hover to reveal it.
+ */
+@media (max-width: 700px) {
+  .sketchbook {
+    /* The nav's type sizes are declared here because the tag is laid out
+       around the room the nav needs with its links showing, so the two have
+       to be measured from the same numbers. The px ceilings stop a wide but
+       short screen (a phone on its side) from inflating them. */
+    --nav-pad: min(4.5vw, 19px);
+    --nav-home: min(8vw, 34px);
+    --nav-link: min(5vw, 21px);
+    --nav-block: calc(
+      var(--nav-pad) + var(--nav-home) * 1.2 + var(--nav-link) * 2.6 + 2px
+    );
+
+    /* Selected thumbnail about 33vw, under a height-based ceiling. */
+    --gallery-scale: min(calc((33vw / 1px) / 150), calc((22dvh / 1px) / 186));
+    --gallery-band: calc(186px * var(--gallery-scale));
+
+    /* Tag runs about 85vw wide unless the gap left between the nav and the
+       gallery says otherwise, so it can never grow into either of them. */
+    --tag-scale: max(
+      0.18,
+      min(
+        calc((85vw / 1px) / 433),
+        calc((100dvh - var(--nav-block) - var(--gallery-band) - 6vw) / 1px / 593)
+      )
+    );
+  }
+
+  .sketchbookNav {
+    padding: var(--nav-pad) 4vw 0;
+  }
+
+  .sketchbookHome {
+    font-size: var(--nav-home);
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+  }
+
+  .sketchbookMenu {
+    margin-top: 0;
+    padding-left: 0.4vw;
+  }
+
+  /* Standing in for the hover the desktop nav opens its links with. */
+  .sketchbookNav.is-menu-open .sketchbookMenu {
+    display: flex;
+  }
+
+  .sketchbookMenuLink {
+    font-size: var(--nav-link);
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+  }
+
+  .sketchbookArrow {
+    display: none;
+  }
+
+  /* The frame stops being a scaled design canvas and becomes a plain
+     full-screen box, so the tag can scale and centre itself. */
+  .sketchbookFrame {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transform: none;
+  }
+
+  .tagStage {
+    /* Centred in what the nav and the gallery leave behind. */
+    top: calc(
+      var(--nav-block) + (100dvh - var(--nav-block) - var(--gallery-band)) / 2
+    );
+    transform: translate(-50%, -50%) scale(var(--tag-scale));
+  }
+
+  /* The enlarged view is sized off the design width too, so it needs the same
+     treatment or tapping the art opens something barely bigger than the tag. */
+  .sketchZoomArt {
+    width: 92vw;
+    height: 76dvh;
+  }
 }
 
 .creativeCoding {
@@ -862,12 +1212,217 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .creativeCodingTrack.is-settling,
-  .creativeCodingDisc {
+  .creativeCodingDisc,
+  .ccStackItem,
+  .ccStackDisc {
     transition: none;
   }
 
-  .creativeCodingDisc.is-active .creativeCodingDiscOuter {
+  .creativeCodingDisc.is-active .creativeCodingDiscOuter,
+  .ccStackItem.is-open .ccStackArt {
     animation: none;
+  }
+}
+
+/*
+ * Mobile creative coding: the desktop layout is one 1280x832 frame scaled to
+ * fit, which at phone width shrinks the discs to ~120px in a row that can
+ * only be reached by dragging. Below 700px the frame instead drops into
+ * normal document flow and the discs restack vertically down the page, at the
+ * mock's proportions: 62vw across, overlapped to a 39.5vw step.
+ */
+.ccStack {
+  display: none;
+}
+
+.ccStackItem {
+  position: relative;
+  /* Follows the disc slide so the neighbours get out of the copy's way at the
+     same pace the disc travels. */
+  transition:
+    margin-top 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin-bottom 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Pull each disc back over the one above by diameter minus step. Paint order
+   is set by the z-index each item carries, first disc highest, so the stack
+   reads as a spindle seen from the top rather than a cascade. */
+.ccStackItem + .ccStackItem {
+  margin-top: -22.8vw;
+}
+
+.ccStackDisc {
+  display: block;
+  width: 62.4vw;
+  height: 62.4vw;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ccStackDisc.is-static {
+  cursor: default;
+}
+
+.ccStackArt {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Open state: the disc parks off the left edge, keeping the same 21% overhang
+   the desktop layout uses, which clears the right side of the screen for the
+   copy. Closed, the neighbours overlap this disc by 22.8vw top and bottom,
+   which leaves too narrow a clear band for the copy — so an open disc also
+   pushes both neighbours off it, and pulls them back when it closes. */
+.ccStackItem.is-open {
+  margin-bottom: 16vw;
+}
+
+.ccStackItem + .ccStackItem.is-open {
+  margin-top: -6vw;
+}
+
+.ccStackItem.is-open .ccStackDisc {
+  transform: translateX(-31.9vw);
+}
+
+.ccStackItem.is-open .ccStackArt {
+  animation: creativeCodingSpin 18s linear infinite;
+}
+
+.ccStackInfo {
+  position: absolute;
+  left: 52vw;
+  /* Centred on the disc, the way the desktop layout centres its copy, rather
+     than hung from the top — the block is shorter than the disc is tall. */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 45vw;
+  color: inherit;
+  text-decoration: none;
+  opacity: 0;
+  /* Hidden rather than transparent so the copy of a closed disc stays out of
+     the tab order and off screen readers. */
+  visibility: hidden;
+  transition: opacity 240ms ease, visibility 0s linear 240ms;
+}
+
+.ccStackItem.is-open .ccStackInfo {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 260ms ease 260ms, visibility 0s;
+}
+
+.ccStackInfo h2 {
+  margin: 0 0 2vw;
+  font-size: 5vw;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.ccStackDescription {
+  font-size: 3.6vw;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+.ccStackDescription p {
+  margin: 0;
+}
+
+.ccStackDate {
+  margin: 3vw 0 0;
+  font-size: 3.6vw;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+.ccStackGo {
+  margin: 2.5vw 0 0;
+  font-size: 3.6vw;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+}
+
+.ccStackInfo:hover .ccStackGo,
+.ccStackInfo:focus-visible .ccStackGo,
+.ccStackInfo:active .ccStackGo {
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .creativeCoding.is-index {
+    height: auto;
+    /* An opened disc hangs off the left edge, so clip sideways while leaving
+       vertical overflow alone; `hidden` here would trap the page scroll. */
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+
+  .creativeCoding.is-index .creativeCodingFrame {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding-bottom: 3vw;
+    overflow: visible;
+    transform: none;
+  }
+
+  .creativeCoding.is-index .creativeCodingNav {
+    position: static;
+    height: auto;
+    padding: 3.8vw 3.7vw 0 2.6vw;
+    font-size: 6.2vw;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .creativeCoding.is-index .creativeCodingNav a {
+    padding: 0;
+  }
+
+  .creativeCoding.is-index .creativeCodingNavGroup {
+    gap: 3.2vw;
+  }
+
+  .creativeCoding.is-index .creativeCodingHeader {
+    position: static;
+    margin-top: 11.1vw;
+    padding: 0 2.9vw;
+  }
+
+  .creativeCoding.is-index .creativeCodingHeader h1 {
+    font-size: 11.5vw;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .creativeCoding.is-index .creativeCodingHeader p {
+    margin-top: 1.8vw;
+    text-indent: 0;
+    font-size: 5.9vw;
+    /* The mock sets this copy unusually tight, close to solid leading. */
+    line-height: 0.85;
+    letter-spacing: -0.03em;
+    /* Desktop fits this on one line; at phone width it has to wrap. */
+    white-space: normal;
+  }
+
+  .creativeCoding.is-index .creativeCodingViewport {
+    display: none;
+  }
+
+  .creativeCoding.is-index .ccStack {
+    display: block;
+    margin-top: 15.1vw;
   }
 }
 
@@ -919,16 +1474,26 @@ body {
 }
 
 @media (max-width: 700px) {
+  /* Same metrics as the projects page nav, so every page's header reads as the
+     same bar rather than one in fixed px and one scaled to the viewport. */
   .ktNav {
     height: auto;
-    padding: 0 4px;
-    font-size: 22px;
-    line-height: 1.3;
-    letter-spacing: -0.66px;
+    /* The bottom padding is the nav's own white band, so a coloured section
+       below it starts clear of the links rather than right against them. */
+    padding: 3.8vw 3.7vw 3vw 2.6vw;
+    font-size: 6.2vw;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
   }
 
   .ktNav a {
-    padding: 16px 8px 0;
+    padding: 0;
+  }
+
+  /* The group's desktop gap is wider than a phone screen can spare, which was
+     pushing the last link towards the edge. */
+  .ktNav .creativeCodingNavGroup {
+    gap: 3.2vw;
   }
 }
 
@@ -940,7 +1505,13 @@ body {
 .ktBanner img {
   display: block;
   width: 100%;
-  height: auto;
+  /* Explicit height (not aspect-ratio, which can conflict with next/image's
+     own layout-shift-prevention sizing) — a touch taller than the image's
+     native ~28.8vw height at 100vw width, stretched (not cropped) to fill
+     it. Only grows the banner's own box further down the page, so the
+     sticky nav above is unaffected. */
+  height: 32vw;
+  object-fit: fill;
 }
 
 .ktContainer {
@@ -1255,6 +1826,22 @@ body {
 
   .ktOverviewGrid {
     flex-direction: column;
+    gap: 24px;
+  }
+
+  /* Stacked, the 480px flex-basis becomes a height and leaves a huge gap. */
+  .ktOverviewText {
+    flex: 0 0 auto;
+  }
+
+  .ktOverviewMeta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px 40px;
+  }
+
+  .ktOverviewMeta > div {
+    min-width: 120px;
   }
 
   .ktFooter {
@@ -1447,7 +2034,10 @@ body {
   }
 
   .cmTitle {
-    font-size: 28px;
+    margin-top: 32px;
+    padding: 0 16px;
+    font-size: clamp(40px, 11vw, 52px);
+    line-height: 1.05;
   }
 }
 
@@ -1864,15 +2454,81 @@ body {
     max-width: 420px;
   }
 
+  /* No padding under the cat: it ends the page, paws on the bottom edge, the
+     same way the cornered version does on a wide screen. */
   .amConnect {
-    padding-bottom: 340px;
+    padding-bottom: 0;
+  }
+
+  /* Stacked layouts have nothing to the side of the links for the cat to sit
+     beside, so it joins the flow underneath them. Cornering it here meant
+     reserving space by hand, and the cat is over twice as tall as it is wide,
+     so it always outgrew whatever padding was set aside and covered the
+     buttons. */
+  .amCat {
+    position: static;
+    display: block;
+    width: 220px;
+    height: auto;
+    margin: 48px auto 0;
+    transform: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .amHero {
+    padding: 40px 0 48px;
+  }
+
+  /* Tighter gutters than a project page wants, so the copy runs most of the
+     width instead of sitting in a narrow column. */
+  .amHero .ktContainer,
+  .amConnect .ktContainer {
+    padding: 0 16px;
+  }
+
+  .amPhotos {
+    /* Flush, so the two read as one stacked pair rather than separate cards. */
+    max-width: 246px;
+    gap: 0;
+  }
+
+  .amText {
+    max-width: 366px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .amText p {
+    margin-bottom: 16px;
+    font-size: 15px;
+  }
+
+  /* Centres the heading and the resume link, which are text-level elements;
+     the buttons are a flex column and centre themselves below. */
+  .amConnect .ktContainer {
+    text-align: center;
+  }
+
+  .amConnect {
+    padding-top: 40px;
+  }
+
+  .amConnectHeading {
+    margin-bottom: 40px;
+    /* 44px wrapped "Connect With Me" onto a second line at this width. */
+    font-size: 38px;
+  }
+
+  .amButtons {
+    max-width: 250px;
+    margin-right: auto;
+    margin-left: auto;
+    gap: 20px;
   }
 
   .amCat {
-    top: auto;
-    right: 50%;
-    bottom: 24px;
-    width: 220px;
-    transform: translateX(50%);
+    width: 200px;
+    margin-top: 40px;
   }
 }

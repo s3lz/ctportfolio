@@ -17,6 +17,7 @@ const THUMB_ACTIVE = 150;
 const GAP = 10;
 const PAD = 20;
 const INTRO_PAUSE = 600;
+const SWIPE_DISTANCE = 40;
 
 type SketchbookViewProps = {
   sketches: Sketch[];
@@ -37,7 +38,11 @@ export default function SketchbookView({ sketches }: SketchbookViewProps) {
   const [isZoomed, setIsZoomed] = useState(false);
   const [hoveredThumb, setHoveredThumb] = useState<number | null>(null);
   const [translateX, setTranslateX] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showVariant, setShowVariant] = useState(false);
 
+  const navRef = useRef<HTMLElement>(null);
+  const zoomSwipeRef = useRef<{ startX: number; swiped: boolean } | null>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const translateRef = useRef(0);
   const skipClickRef = useRef(false);
@@ -98,9 +103,26 @@ export default function SketchbookView({ sketches }: SketchbookViewProps) {
     return () => window.removeEventListener("resize", recenter);
   }, [centerOn, selected]);
 
+  // Every enlarged view opens on the coloured version, whichever piece it is.
+  useEffect(() => {
+    setShowVariant(false);
+  }, [selected, isZoomed]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const closeOnOutside = (event: PointerEvent) => {
+      const target = event.target;
+      if (target instanceof Node && navRef.current?.contains(target)) return;
+      setIsMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", closeOnOutside);
+    return () => document.removeEventListener("pointerdown", closeOnOutside);
+  }, [isMenuOpen]);
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
+        setIsMenuOpen(false);
         setIsZoomed(false);
       } else if (event.key === "ArrowRight") {
         event.preventDefault();
@@ -203,13 +225,27 @@ export default function SketchbookView({ sketches }: SketchbookViewProps) {
       </div>
       <div className="sketchbookTint" />
 
-      <nav className="sketchbookNav">
-        <Link href="/" className="sketchbookHome">
+      <nav
+        className={`sketchbookNav${isMenuOpen ? " is-menu-open" : ""}`}
+        ref={navRef}
+      >
+        <Link
+          href="/"
+          className="sketchbookHome"
+          onClick={(event) => {
+            // A touch screen has no hover to open the section links with, so
+            // the first tap opens them and a second one follows the link.
+            if (!isMenuOpen && window.matchMedia("(max-width: 700px)").matches) {
+              event.preventDefault();
+              setIsMenuOpen(true);
+            }
+          }}
+        >
           home
         </Link>
         <div className="sketchbookMenu">
           <Link href="/creativecoding" className="sketchbookMenuLink">
-            creative coding
+            projects
           </Link>
           <Link href="/aboutme" className="sketchbookMenuLink">
             about me
@@ -351,14 +387,32 @@ export default function SketchbookView({ sketches }: SketchbookViewProps) {
           type="button"
           className="sketchZoom"
           aria-label="Close enlarged view"
-          onClick={() => setIsZoomed(false)}
+          onPointerDown={(event) => {
+            zoomSwipeRef.current = { startX: event.clientX, swiped: false };
+          }}
+          onPointerMove={(event) => {
+            const swipe = zoomSwipeRef.current;
+            if (!swipe || swipe.swiped || !current.hoverSrc) return;
+            if (Math.abs(event.clientX - swipe.startX) < SWIPE_DISTANCE) return;
+            swipe.swiped = true;
+            setShowVariant((shown) => !shown);
+          }}
+          onClick={() => {
+            // A swipe that flipped the variant shouldn't also close the view.
+            if (zoomSwipeRef.current?.swiped) return;
+            setIsZoomed(false);
+          }}
         >
-          <span className={`sketchZoomArt${current.hoverSrc ? " has-hover" : ""}`}>
+          <span
+            className={`sketchZoomArt${current.hoverSrc ? " has-hover" : ""}${
+              showVariant ? " is-variant" : ""
+            }`}
+          >
             <Image
               src={current.src}
               alt={current.name}
               fill
-              sizes="947px"
+              sizes="(max-width: 700px) 92vw, 1180px"
               className="sketchZoomImage"
             />
             {current.hoverSrc && (
@@ -366,12 +420,20 @@ export default function SketchbookView({ sketches }: SketchbookViewProps) {
                 src={current.hoverSrc}
                 alt=""
                 fill
-                sizes="947px"
+                sizes="(max-width: 700px) 92vw, 1180px"
                 loading="eager"
                 className="sketchZoomImage sketchZoomHover"
               />
             )}
           </span>
+          {current.hoverSrc && (
+            // Touch has no hover to swap the two versions with, so the swap is a
+            // swipe there and these dots are what advertises it.
+            <span className="sketchZoomSwipe" aria-hidden="true">
+              <span className={`sketchZoomDot${showVariant ? "" : " is-on"}`} />
+              <span className={`sketchZoomDot${showVariant ? " is-on" : ""}`} />
+            </span>
+          )}
         </button>
       )}
 
@@ -383,7 +445,7 @@ export default function SketchbookView({ sketches }: SketchbookViewProps) {
             src={current.hoverSrc}
             alt=""
             fill
-            sizes="947px"
+            sizes="(max-width: 700px) 92vw, 1180px"
             loading="eager"
           />
         </span>

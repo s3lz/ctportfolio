@@ -10,8 +10,6 @@ const discs: CreativeCodingDisc[] = [
     ],
     href: "/creativecoding/kinetictypography",
   },
-  { id: "gray-one", color: "gray" },
-  { id: "gray-two", color: "gray" },
   {
     id: "printed-chainmail",
     color: "blue",
@@ -26,7 +24,6 @@ const discs: CreativeCodingDisc[] = [
     description: ["a interactive art app that is responsive to environmental factors and motion control"],
     href: "/creativecoding/interactiveinstallation",
   },
-  { id: "gray-three", color: "gray" },
 ];
 
 export default function CreativeCodingPage() {

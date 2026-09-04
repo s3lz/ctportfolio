@@ -26,10 +26,15 @@ type CreativeCodingViewProps = {
 const DESIGN_WIDTH = 1280;
 const DISC_SIZE = 390.388;
 const DISC_STEP = 242.388;
-const CLOSED_LEFT = -81;
+// Where the strip begins with nothing open, level with the heading above it.
+// The design bled this disc off the left edge, which reads as a record that got
+// cut off now that every disc on the page is a project someone can open.
+const TRACK_START_LEFT = 16;
+// An opened disc parks here, hanging off the edge, with its copy alongside.
+const PARKED_LEFT = -81;
 const OPEN_REST_LEFT = 727.16;
 const DRAG_THRESHOLD = 6;
-// Design places the copy at frame x 382; the track starts at frame -81.
+// Design places the copy at frame x 382; the parked disc sits at frame -81.
 const INFO_OFFSET_X = 463;
 // Vertically centred on the open disc, which sits flush with the top of the track.
 const INFO_CENTER_Y = DISC_SIZE / 2;
@@ -56,31 +61,23 @@ export default function CreativeCodingView({ discs }: CreativeCodingViewProps) {
     ? [activeDisc, ...discs.filter((disc) => disc.id !== activeDisc.id)]
     : discs;
 
-  // On a wide screen the design spacing would leave the strip short of the right
-  // edge, so spread the discs until the last one runs off it. Capped at the disc
-  // width so they always keep some overlap instead of drifting apart.
-  const stepFor = useCallback(
-    (isOpen: boolean) => {
-      const firstLeft = isOpen ? OPEN_REST_LEFT : CLOSED_LEFT;
-      const gaps = Math.max(1, discs.length - (isOpen ? 2 : 1));
-      const spread = (trackWidth - DISC_SIZE - firstLeft) / gaps;
-      return Math.min(DISC_SIZE, Math.max(DISC_STEP, spread));
-    },
-    [discs.length, trackWidth],
-  );
-
+  // The discs keep the design's spacing at every screen width, which is what
+  // leaves them overlapping like a row of records. Stretching the strip to reach
+  // the right edge instead would pull them apart until they only touched.
   const trackBounds = useCallback(
     (isOpen: boolean) => {
       const lastLeft = isOpen
-        ? OPEN_REST_LEFT + Math.max(0, discs.length - 2) * stepFor(true)
-        : CLOSED_LEFT + Math.max(0, discs.length - 1) * stepFor(false);
+        ? OPEN_REST_LEFT + Math.max(0, discs.length - 2) * DISC_STEP
+        : TRACK_START_LEFT + Math.max(0, discs.length - 1) * DISC_STEP;
       const contentRight = lastLeft + DISC_SIZE;
       return {
-        max: Math.max(0, -CLOSED_LEFT),
+        // Only an opened disc hangs off the left, so only then is there
+        // something to the left worth dragging into view.
+        max: isOpen ? -PARKED_LEFT : 0,
         min: Math.min(0, trackWidth - contentRight),
       };
     },
-    [discs.length, stepFor, trackWidth],
+    [discs.length, trackWidth],
   );
 
   const updateTranslate = useCallback(
@@ -164,7 +161,7 @@ export default function CreativeCodingView({ discs }: CreativeCodingViewProps) {
   };
 
   return (
-    <main className="creativeCoding">
+    <main className="creativeCoding is-index">
       <div className="creativeCodingFrame">
         <nav className="creativeCodingNav" aria-label="Primary navigation">
           <Link href="/">home</Link>
@@ -175,8 +172,8 @@ export default function CreativeCodingView({ discs }: CreativeCodingViewProps) {
         </nav>
 
         <header className="creativeCodingHeader">
-          <h1>creative coding</h1>
-          <p>projects reflecting my interest in the intersectionality of art and technology</p>
+          <h1>projects</h1>
+          <p>view my work at the intersection of art and technology</p>
         </header>
 
         <div
@@ -197,9 +194,9 @@ export default function CreativeCodingView({ discs }: CreativeCodingViewProps) {
               const isActive = disc.id === activeId;
               const left = activeDisc
                 ? isActive
-                  ? CLOSED_LEFT
-                  : OPEN_REST_LEFT + (index - 1) * stepFor(true)
-                : CLOSED_LEFT + index * stepFor(false);
+                  ? PARKED_LEFT
+                  : OPEN_REST_LEFT + (index - 1) * DISC_STEP
+                : TRACK_START_LEFT + index * DISC_STEP;
               const discArt = (
                 <Image
                   src={`/creativecodingpics/cd-${disc.color}.png`}
@@ -216,29 +213,13 @@ export default function CreativeCodingView({ discs }: CreativeCodingViewProps) {
                 isActive ? " is-active" : ""
               }`;
 
-              if (disc.title && isActive && disc.href) {
-                return (
-                  <Link
-                    key={disc.id}
-                    href={disc.href}
-                    className={discClass}
-                    style={{ left }}
-                    aria-label={`Open ${disc.title} project`}
-                    aria-expanded={true}
-                    onClick={ignoreClickAfterDrag}
-                  >
-                    {discArt}
-                  </Link>
-                );
-              }
-
               return disc.title ? (
                 <button
                   key={disc.id}
                   type="button"
                   className={discClass}
                   style={{ left }}
-                  aria-label={`Open ${disc.title}`}
+                  aria-label={`${isActive ? "Close" : "Open"} ${disc.title}`}
                   aria-expanded={isActive}
                   onClick={() => openDisc(disc)}
                 >
@@ -262,7 +243,7 @@ export default function CreativeCodingView({ discs }: CreativeCodingViewProps) {
                   href={activeDisc.href}
                   className="creativeCodingInfo is-link"
                   style={{
-                    left: CLOSED_LEFT + INFO_OFFSET_X,
+                    left: PARKED_LEFT + INFO_OFFSET_X,
                     top: INFO_CENTER_Y,
                   }}
                   aria-label={`Open ${activeDisc.title} project`}
@@ -283,7 +264,7 @@ export default function CreativeCodingView({ discs }: CreativeCodingViewProps) {
                 <section
                   className="creativeCodingInfo"
                   style={{
-                    left: CLOSED_LEFT + INFO_OFFSET_X,
+                    left: PARKED_LEFT + INFO_OFFSET_X,
                     top: INFO_CENTER_Y,
                   }}
                   aria-live="polite"
@@ -300,6 +281,86 @@ export default function CreativeCodingView({ discs }: CreativeCodingViewProps) {
                 </section>
               ))}
           </div>
+        </div>
+
+        {/* The drag track needs horizontal room it doesn't have on a phone, so
+            narrow screens get the same discs as a vertical stack that scrolls
+            with the page. Tapping a disc parks it off the left edge and opens
+            its copy alongside, mirroring the desktop open state. Earlier discs
+            sit on top of later ones, so the stack reads as a spindle. */}
+        <div className="ccStack">
+          {discs.map((disc, index) => {
+            const isOpen = disc.id === activeId;
+            const art = (
+              <Image
+                src={`/creativecodingpics/cd-${disc.color}.png`}
+                alt=""
+                width={DISC_SIZE}
+                height={DISC_SIZE}
+                sizes="62vw"
+                draggable={false}
+                className="ccStackArt"
+              />
+            );
+
+            if (!disc.title) {
+              return (
+                <div
+                  key={disc.id}
+                  className="ccStackItem"
+                  style={{ zIndex: discs.length - index }}
+                  aria-hidden="true"
+                >
+                  <span className="ccStackDisc is-static">{art}</span>
+                </div>
+              );
+            }
+
+            return (
+              <div
+                key={disc.id}
+                className={`ccStackItem${isOpen ? " is-open" : ""}`}
+                style={{ zIndex: isOpen ? discs.length + 1 : discs.length - index }}
+              >
+                <button
+                  type="button"
+                  className="ccStackDisc"
+                  aria-expanded={isOpen}
+                  aria-label={`${isOpen ? "Close" : "Open"} ${disc.title}`}
+                  onClick={() => openDisc(disc)}
+                >
+                  {art}
+                </button>
+
+                {disc.href ? (
+                  <Link
+                    href={disc.href}
+                    className="ccStackInfo"
+                    aria-label={`Go to ${disc.title} project`}
+                  >
+                    <h2>{disc.title}</h2>
+                    <div className="ccStackDescription">
+                      {disc.description?.map((line) => (
+                        <p key={line}>{line}</p>
+                      ))}
+                    </div>
+                    {disc.date && <p className="ccStackDate">{disc.date}</p>}
+                    <p className="ccStackGo">→ go to project</p>
+                  </Link>
+                ) : (
+                  <div className="ccStackInfo">
+                    <h2>{disc.title}</h2>
+                    <div className="ccStackDescription">
+                      {disc.description?.map((line) => (
+                        <p key={line}>{line}</p>
+                      ))}
+                    </div>
+                    {disc.date && <p className="ccStackDate">{disc.date}</p>}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </main>

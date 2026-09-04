@@ -12,7 +12,7 @@ export default function AboutMePage() {
       <nav className="ktNav" aria-label="Primary navigation">
         <Link href="/">home</Link>
         <span className="creativeCodingNavGroup">
-          <Link href="/creativecoding">creative coding</Link>
+          <Link href="/creativecoding">projects</Link>
           <Link href="/sketchbook">sketchbook</Link>
         </span>
       </nav>
