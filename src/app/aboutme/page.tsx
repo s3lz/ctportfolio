@@ -43,19 +43,31 @@ export default function AboutMePage() {
                 multimedia art.
               </p>
               <p>
-                After studying computer science at Boston University and
-                interning in front-end engineering and data engineering, I
-                started working full time as a back-end software engineer.
-                After 2 years of building distributed systems, I wanted to
-                find a way to combine the things that I know how to do and
-                love to do, coding and art. Through creative coding, I am
-                able to use my software background to create visual and
-                computational experiments.
+                I studied computer science at Boston University, where I
+                developed a foundation in software engineering and
+                computational design. After internships in front-end
+                engineering and data engineering, I started working full
+                time as a back-end software engineer and distributed
+                systems.
               </p>
               <p>
-                Outside of my job, I am usually playing guitar, drawing, or
-                baking in my kitchen. You can also probably find me at a
-                concert venue or at the park basking in the sun.
+                Outside of engineering, I&apos;ve always been drawn to
+                creating things. I draw, making digital art, play guitar,
+                write music, and experiment with different forms of design.
+                After two years of building distributed systems, I wanted to
+                find a way to bring these interests together.
+              </p>
+              <p>
+                My current projects range from AI-assisted kinetic
+                typography to computational fabrication and 3D printing to
+                interactive art. I&apos;m always thinking about ways to use
+                computation as a medium for exploring visual, interactive,
+                and physical ideas, with more projects coming soon.
+              </p>
+              <p>
+                Outside of coding or making art, you can probably find me
+                baking in my kitchen, at a concert venue, or at a park
+                basking in the sun.
               </p>
               <p>
                 (If we ever hop on a call, my cat, Harold Applejuice is a

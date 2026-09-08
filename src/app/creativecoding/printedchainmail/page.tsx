@@ -122,7 +122,7 @@ export default function PrintedChainmailPage() {
                   >
                     <Image
                       className="cmRowImage"
-                      style={{ height: "340px" }}
+                      style={{ height: "auto", maxHeight: "340px", width: "auto" }}
                       src="/chainmailpics/chainmail-before-remesh.png"
                       alt="Triangulated mesh patch before remeshing, with irregular triangle sizes"
                       width={1078}
@@ -139,7 +139,7 @@ export default function PrintedChainmailPage() {
                   >
                     <Image
                       className="cmRowImage"
-                      style={{ height: "340px" }}
+                      style={{ height: "auto", maxHeight: "340px", width: "auto" }}
                       src="/chainmailpics/chainmail-after-remesh.png"
                       alt="The same mesh patch after remeshing into near-equilateral triangles"
                       width={1168}
