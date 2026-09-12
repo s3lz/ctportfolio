@@ -18,7 +18,7 @@ const FIRST = ["ballerina", "vickieolivia", "imissitaly", "bedgirlc", "yana", "y
 
 const DIGITAL = new Set(["bedgirlc", "cousinsc", "glamgirlc", "tilda", "3musketeers"]);
 
-const INK = new Set(["waltz"]);
+const INK = new Set(["waltz", "2325bday"]);
 
 // Blended-medium pieces: medium and percentage are shown on the same tag
 // row (space-between), so both strings need to line up positionally
