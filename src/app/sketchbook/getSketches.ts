@@ -14,7 +14,7 @@ export type Sketch = {
   hoverSrc?: string;
 };
 
-const FIRST = ["ballerina", "vickieolivia", "imissitaly", "bedgirlc", "yana", "yana2"];
+const FIRST = ["sweet", "together2", "ballerina", "vickieolivia", "imissitaly", "bedgirlc", "yana", "yana2"];
 
 const DIGITAL = new Set(["bedgirlc", "cousinsc", "glamgirlc", "tilda", "3musketeers"]);
 
